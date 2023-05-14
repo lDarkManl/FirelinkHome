@@ -1,0 +1,30 @@
+{% load static %}
+{% block static %}<link rel="stylesheet" type="text/css" href="{% static 'css/game-select.css' %}">{% endblock %}
+
+{% if url_page == 'articles:game' %}
+	<form action="{% url 'articles:game' %}" method="get">
+{% else %}
+	<form action="{% url 'articles:game_and_category' category_obj.category_title_meta %}" method="get">
+{% endif %}
+
+	<div class="games">
+		<h3 class="text-light">Выбрать игру:</h3>
+		<div class="choose_game">
+			{% for game in games_list %}
+				{% if games %}
+					{% if game.game_title_meta in games %}
+						<p><input type="checkbox" class="btn-check" id="{{game.game_title_meta}}" name="game" value="{{game.game_title_meta}}" checked>
+						<label class="btn btn-outline-secondary" for="{{game.game_title_meta}}">{{game.game_title}}</label><br></p>
+					{% else %}
+						<p><input type="checkbox" class="btn-check" id="{{game.game_title_meta}}" name="game" value="{{game.game_title_meta}}">
+						<label class="btn btn-outline-secondary" for="{{game.game_title_meta}}">{{game.game_title}}</label><br></p>
+					{% endif %}
+				{% else %}
+					<p><input type="checkbox" class="btn-check" id="{{game.game_title_meta}}" name="game" value="{{game.game_title_meta}}">
+						<label class="btn btn-outline-secondary" for="{{game.game_title_meta}}">{{game.game_title}}</label><br></p>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<button type="submit" class="btn btn-primary">Выбрать</button>
+	</div>
+</form>

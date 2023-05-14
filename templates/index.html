@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+      	<!-- Yandex.RTB R-A-2338003-1 -->
+        <div id="yandex_rtb_R-A-2338003-1"></div>
+        <script>window.yaContextCb.push(()=>{
+          Ya.Context.AdvManager.render({
+            renderTo: 'yandex_rtb_R-A-2338003-1',
+            blockId: 'R-A-2338003-1'
+          })
+        })</script>
+		{% include 'message.html' %}
+		<div class="card text-light main-article">
+		  <img src="{{new_article.article_image.url}}" class="card-img">
+		  <div class="card-img-overlay main-article-title">
+		  	<p>{{new_article.article_title}}</p>
+		    <a href="{% url 'articles:detail' new_article.id %}" class="btn btn-primary">Читать</a>
+		  </div>
+		</div>
+      	
+		<div class="nav-main">
+			<a href="{% url 'articles:index' %}">Статьи</a>
+		</div>
+		{% include 'article.html' with articles_list=new_articles_list %}
+		<div class="nav-main">
+			<div><a href="{% url 'arts:index' %}">Арты</a></div>
+		</div>
+		{% include 'art.html' with arts_list=new_arts_list %}
+		<div class="nav-main">
+			<div><a href="{% url 'music:index' %}">Музыка</a></div>
+		</div>
+		{% include 'track.html' with tracks_list=new_tracks_list %}
+	</div>
+</div>
+{% endblock %}

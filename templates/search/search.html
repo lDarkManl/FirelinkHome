@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		{% include 'message.html' %}
+		{% if articles_list or arts_list or tracks_list %}
+			<h1 class="text-center text-light pt-3">По запросу {{query}} найдено:</h1> 
+			{% if articles_list %}
+				<div class="nav-main text-center mt-3">
+					<a href="{% url 'articles:index' %}">Статьи</a>
+				</div>
+				{% include 'article.html' with articles_list=articles_list %}
+			{% endif %}
+			{% if arts_list %}
+				<div class="nav-main text-center mt-3 mb-3">
+					<a href="{% url 'arts:index' %}">Арты</a>
+				</div>
+				{% include 'art.html' with arts_list=arts_list %}
+			{% endif %}
+			{% if tracks_list %}
+				<div class="nav-main text-center mt-3">
+					<a href="{% url 'music:index' %}">Музыка</a>
+				</div>
+				{% include 'track.html' with tracks_list=tracks_list %}
+			{% endif %}
+		{% else %}
+			<h1 class="text-center text-light pt-3">По запросу {{query}} ничего не найдено</h1>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}

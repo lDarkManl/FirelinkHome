@@ -1,0 +1,21 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-inverse bg-dark navbar-dark">
+  <div class="container">
+    <a href="{% url 'index' %}"><div class="img-favicon"><img src="{% static 'Bonfire.png' %}" alt="" class="img-fluid"></div></a>
+    <button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target=".nav-list" aria-expanded="false" aria-controls=".nav-list">
+      <span class="navbar-toggler-icon text-light"></span>
+    </button>
+    <div class="collapse navbar-collapse nav-list head-nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item ms-xl-5 ms-lg-0"><a href="{% url 'articles:index' %}" class="nav-link font-size">Статьи</a></li>
+        <li class="nav-item ms-xl-5 ms-lg-0"><a href="{% url 'music:index' %}" class="nav-link font-size">Музыка</a></li>
+        <li class="nav-item ms-xl-5 ms-lg-0"><a href="{% url 'arts:index' %}" class="nav-link font-size">Арты</a></li>
+        <li class="nav-item ms-xl-5 ms-lg-0"><a href="{% url 'private_office:private_office' %}" class="nav-link font-size">Личный кабинет</a></li>
+      </ul>
+      <form class="d-flex ms-auto" role="search" action="{% url 'search:search' %}" method="get">
+        <input class="form-control" type="text" placeholder="Поиск" name="q">
+        <button class="btn btn-outline-primary" type="submit">Искать</button>
+      </form>
+    </div>
+  </div>
+</nav>

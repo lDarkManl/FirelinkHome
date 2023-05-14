@@ -1,0 +1,18 @@
+<div class="articles">
+	{% for article in articles_list %}
+		<div class="card ms-lg-3 my-3 article text-center text-bg-dark border-secondary">
+			<div class="article-image">
+				<img data-src="{{article.article_image.url}}" class="card-img-top lazy">
+			</div>
+			<div class="card-header article-title border-secondary">
+				<p class="card-title">{{article.article_title}}</p>
+			</div>
+			<div class="card-body">
+			    <p class="card-text">{{article.article_category.category_title}}<br>
+			    					{{article.article_game.game_title}}<br>
+			    					{{article.update_date|date:"j E Y"}}</p>
+			    <a href="{% url 'articles:detail' article.id %}" class="btn btn-primary text-center">Читать</a>
+			  </div>
+		</div>
+	{% endfor %}
+</div>

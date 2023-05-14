@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		{% include 'message.html' %}
+		<h1 class="text-light text-center mt-1">Вход</h1>
+		<form action="{% url 'private_office:login' %}" method="POST">
+			<div class="registration">
+				{% csrf_token %}
+				{{form.as_p}}
+				<div class="d-flex justify-content-center"><button type="submit" class="btn btn-primary">Войти в аккаунт</button></div>
+			</div>
+		</form>
+		<div class="d-flex justify-content-center mt-3"><a href="{% url 'private_office:registration' %}" class="btn btn-success">Зарегистрироваться</a></div>
+	</div>
+</div>
+{% endblock %}

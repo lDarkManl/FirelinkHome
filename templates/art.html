@@ -1,0 +1,12 @@
+<div class="arts">
+	{% for art in arts_list %}
+		<div class="card art text-bg-dark border-secondary mt-3">
+		  <div class="card-header art-text"><img class="profile-image" src="{{art.author.profile.image.url}}" alt=""> {{art.author}}<br>{{art.title}}</div>
+		  <a href="{% url 'arts:detail' art.id %}"><img src="{{art.image.url}}" class="card-img-top"></a>
+		  <div class="card-body">
+		  	<p class='tags-list'>{% for tag in art.tags.all %} <a href="{% url 'arts:tag_slug' tag.slug %}">{{tag.name}}</a>{% endfor %}</p>
+		    <p class="card-text art-text"><i class="fa-regular fa-thumbs-up"></i>{{art.total_likes}} <i class="fa-solid fa-eye"></i>{{art.total_views}}</p>
+		  </div>
+		</div>
+	{% endfor %}
+</div>

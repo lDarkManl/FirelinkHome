@@ -1,0 +1,19 @@
+{% load static %}
+<div class="tracks">
+	{% for track in tracks_list %}
+		<div class="card mt-3 track text-bg-dark border-secondary">
+		  <div class="row g-0">
+		    <div class="img-track">
+		      <img src="{{track.image.url}}" class="img-fluid rounded-start">
+		    </div>
+		    <div class="col-md-8">
+		      <div class="card-body">
+		        <h5 class="card-title">{% if track.author.profile.image %}<img class="profile-image" src="{{track.author.profile.image.url}}" alt="">{% else %}<img class="profile-image" src="{% static 'black.jpg' %}" alt="">{% endif %}{{track.author}}</h5>
+		        <h5 class="card-title">{{track.track_title}}</h5>
+		        <a href="{% url 'music:comments' track.slug %}" class="btn btn-primary">Прослушать</a>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	{% endfor %}
+</div>

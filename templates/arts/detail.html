@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}{{art.title_seo}}{% endblock %}
+{% load arts_tags %}
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		<div class="detail">
+			{% include 'message.html' %}
+			<h1 class="text-light text-center pt-3 title">{{art.title}}</h1>
+			<div class="detail-image">
+				<img src="{{art.image.url}}" alt="" class="img-fluid">
+			</div>
+			<div class="detail-content text-light">
+				{{art.content |safe}}
+			</div>
+			<br>
+			<div class="detail-statistic text-light">
+				<div><button onClick="copyToClipboard()" class="btn btn-secondary">Скопировать ссылку</button></div>
+				<div id="likes"><i class="fa-solid fa-eye"></i>{{art.total_views}} <a href="{% url 'arts:art_like' art.id %}"><i class="{% is_fan art user %}"></i></a>{{art.total_likes}}</div>
+			</div>
+			<div class="comments">	
+				<h2 class="text-light pt-3">Комментариев: {{art.total_comments}}</h2>
+				{% for comment in comments_list %}
+					<div class="media border border-dark-subtle p-3 d-flex flex-row bg-dark comment mt-4">
+						<div class="media-body text-light">
+							<h4><img src="{{art.author.profile.image.url}}" class="rounded-circle">{{comment.author}} <small>{{comment.pub_date}}</small> {% if user == comment.author %}
+								<div class="delete"><a href="{% url 'arts:delete_comment' art.id comment.id %}"><i class="fa-regular fa-trash-can"></i></a></div>
+							{% endif %}</h4>
+							<p>{{comment.comment_text}}</p>
+							<div class="like">
+								<a href="{% url 'arts:comment_like' art.id comment.id %}"><i class="{% is_fan comment user %}"></i></a>
+								{{comment.total_likes}}
+							</div>
+						</div>
+					</div>
+					{% for sub_comment in comment.get_sub_comments %}
+						<div class="media border border-dark-subtle p-3 d-flex flex-row bg-dark comment sub_comment">
+							<div class="media-body text-light">
+								<h4><img src="{{art.author.profile.image.url}}" class="rounded-circle">{{sub_comment.author}} <small>{{sub_comment.pub_date}}</small> {% if user == sub_comment.author %}
+									<div class="delete"><a href="{% url 'arts:delete_comment' art.id sub_comment.id %}"><i class="fa-regular fa-trash-can"></i></a></div>
+								{% endif %}</h4>
+								<p>{{sub_comment.sub_comment_text}}</p>
+							</div>
+						</div>
+					{% endfor %}
+						<div class="sub-form-comment">
+							<h2 class="text-light">Ответить на комментарий</h2>
+							<form action="{% url 'arts:leave_sub_comment' art.id comment.id %}" method="POST">
+								{% csrf_token %}
+								<div class="form-text" id="sub-form-text">
+									{{sub_form.sub_comment_text}}
+									<button type="submit" class="btn btn-primary mt-1">Отправить</button>
+								</div>
+							</form>
+						</div>
+				{% endfor %}
+				<h2 class="text-light pt-3">Оставить комментарий</h2>
+				<div class="form-comment">
+					<form action="{% url 'arts:leave_comment' art.id %}" method="POST">
+						{% csrf_token %}
+						<div class="form-text">{{form.comment_text}}
+						<button type="submit" class="btn btn-primary mt-1">Отправить</button></div>
+					</form>
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

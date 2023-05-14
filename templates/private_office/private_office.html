@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		{% include 'message.html' %}
+		<div class="user-info">
+			<div class="user text-light">
+				<img class="rounded-circle user-image" src="{% if user.profile.image %}{{user.profile.image.url}}{% else %} https://www.meme-arsenal.com/memes/2ebac5d0a54946f23403e7679b1c808e.jpg{% endif %}" alt="">
+				{{user}}
+			</div>
+			<p class="close"><a href="{% url 'private_office:logout' %}">Выйти</a></p>
+			<div class="statistic text-light my-4">
+				<h2>Статистика:</h2>
+				<p>Лайков поставлено: {{user.profile.total_likes}}</p>
+				<p>Комментариев написано: {{user.profile.total_comments}}</p>
+			</div>
+			
+			<div class="change">
+				<div class="change-name">
+					<h4 class="text-light">Сменить имя:</h4>
+					<form action="{% url 'private_office:set_name' %}" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						{{user_form.as_p}}
+						<button type="submit" class="btn btn-primary">Изменить</button>
+					</form>
+				</div>
+				
+				<div class="change-photo">
+					<h4 class="text-light">Сменить фото:</h4>
+					<form action="{% url 'private_office:set_image' %}" method="POST" enctype="multipart/form-data">
+						{% csrf_token %}
+						{{photo_form.as_p}}
+						<button type="submit" class="btn btn-primary">Подтвердить</button>
+					</form>
+				</div>
+			</div>
+			<div class="history">
+				<h2 class="text-light">История просмотра</h2>
+				<ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+				  <li class="nav-item mx-sm-3" role="presentation">
+				    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Статьи</button>
+				  </li>
+				  <li class="nav-item mx-sm-3" role="presentation">
+				    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Арты</button>
+				  </li>
+				  <li class="nav-item mx-sm-3" role="presentation">
+				    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Музыка</button>
+				  </li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+				  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">{% include 'article.html' with articles_list=articles_list %}</div>
+				  <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">{% include 'art.html' with arts_list=arts_list %}</div>
+				  <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">{% include 'track.html' with tracks_list=tracks_list %}</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

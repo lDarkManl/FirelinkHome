@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block title %}{{track.track_title_seo}}{% endblock %}
+{% load arts_tags %}
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		<div class="detail">
+			{% include 'message.html' %}
+			<h1 class="text-light pt-3">{{track.track_title}}</h1>
+			<div class="track-img">
+				<img src="{{track.image.url}}" alt="">
+			</div>
+			<div class="track-record">	
+				<audio controls>
+				    <source src="{{track.track.url}}" type="audio/mp3">
+				</audio>
+			</div>
+			<br>
+			<div class="detail-statistic text-light">
+				<div><button onClick="copyToClipboard()" class="btn btn-secondary">Скопировать ссылку</button></div>
+				<div id="likes"><i class="fa-solid fa-eye"></i>{{track.total_views}} <a href="{% url 'music:track_like' track.slug %}"><i class="{% is_fan track user %}"></i></a>{{track.total_likes}}</div>
+			</div>
+			<div class="comments">	
+				<h2 class="text-light pt-3">Комментариев: {{track.total_comments}}</h2>
+				{% for comment in comments_list %}
+					<div class="media border border-dark-subtle p-3 d-flex flex-row bg-dark comment mt-4">
+						<div class="media-body text-light">
+							<h4><img src="{{track.author.profile.image.url}}" class="rounded-circle">{{comment.author}} <small>{{comment.pub_date}}</small> {% if user == comment.author %}
+								<div class="delete"><a href="{% url 'music:delete_comment' track.slug comment.id %}"><i class="fa-regular fa-trash-can"></i></a></div>
+							{% endif %}</h4>
+							<p>{{comment.comment_text}}</p>
+							<div class="like">
+								<a href="{% url 'music:comment_like' track.slug comment.id %}"><i class="{% is_fan comment user %}"></i></a>
+								{{comment.total_likes}}
+							</div>
+						</div>
+					</div>
+					{% for sub_comment in comment.get_sub_comments %}
+						<div class="media border border-dark-subtle p-3 d-flex flex-row bg-dark comment sub_comment">
+							<div class="media-body text-light">
+								<h4><img src="{{track.author.profile.image.url}}" class="rounded-circle">{{sub_comment.author}} <small>{{sub_comment.pub_date}}</small> {% if user == sub_comment.author %}
+									<div class="delete"><a href="{% url 'music:delete_comment' track.slug sub_comment.id %}"><i class="fa-regular fa-trash-can"></i></a></div>
+								{% endif %}</h4>
+								<p>{{sub_comment.sub_comment_text}}</p>
+							</div>
+						</div>
+					{% endfor %}
+						<div class="sub-form-comment">
+							<h2 class="text-light">Ответить на комментарий</h2>
+							<form action="{% url 'music:leave_sub_comment' track.slug track.id comment.id %}" method="POST">
+								{% csrf_token %}
+								<div class="form-text" id="sub-form-text">
+									{{sub_form.sub_comment_text}}
+									<button type="submit" class="btn btn-primary mt-1">Отправить</button>
+								</div>
+							</form>
+						</div>
+				{% endfor %}
+				<h2 class="text-light pt-3">Оставить комментарий</h2>
+				<div class="form-comment">
+					<form action="{% url 'music:leave_comment' track.slug track.id %}" method="POST">
+						{% csrf_token %}
+						<div class="form-text">{{form.comment_text}}
+						<button type="submit" class="btn btn-primary mt-1">Отправить</button></div>
+					</form>
+				</div>
+				<br>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

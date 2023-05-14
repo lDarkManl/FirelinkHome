@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		{% include 'message.html' %}
+		<div class="nav-main">
+			Арты
+		</div>
+		<div class="row flex-row-reverse">
+			<div class="col-xxl-3 col-md-12">
+				<nav class="navbar navbar-expand-lg flex-wrap">
+					<h2 class="text-light">Выбрать теги</h2>
+					<button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target=".call" aria-expanded="false" aria-controls=".call"><i class="fa-solid fa-list"></i></button>
+					<div class="call navbar-collapse collapse">
+						<div class="nav-tag">
+							<div class="tag-search">
+								<form class="d-flex" action="{% url 'arts:tag' %}">
+									<input class="form-control" type="text" name="tag_search" placeholder="Тег 1, Тег 2...">
+									<button class="btn btn-outline-secondary" type="submit">Найти</button>
+								</form>
+							</div>
+							<form action="{% url 'arts:tag' %}">
+								<div class="tags">
+									{% for tag in tags_list %}
+										<p class="label-div"><input type="checkbox" class="btn-check" id="tag-{{tag.slug}}" name="tag" value="{{tag.slug}}" {% if tag in selected_tags %}checked="checked"{% endif %}><label for="tag-{{tag.slug}}" class="btn btn-outline-secondary">{{tag.name}}</label></p>
+									{% endfor %}
+								</div>
+								<button type="submit" class="btn btn-primary">Выбрать</button>
+							</form>
+						</div>
+					</div>
+				</nav>
+			</div>
+			
+			<div class="col-xxl-9 col-md-12">
+				{% include 'art.html' with arts_list=arts_list %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

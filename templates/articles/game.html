@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block main %}
+<div class="container-fluid bg-dark">
+	<div class="container back">
+		{% include 'message.html' %}
+		<div class="nav-main" id="articles">
+			Статьи
+		</div>
+		<div class="nav-articles">
+			<nav class="nav justify-content-center">
+				{% if categories_list %}
+					{% for category in categories_list %}
+						<a class="nav-link" href="{% url 'articles:category' category.category_title_meta %}">{{category.category_title}}</a>
+					{% endfor %}
+				{% endif %}
+			</nav>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-md-12 col-xxl-2">
+				{% include 'articles/game_select.html' with games_list=games_list url_page='articles:game' games=games %}
+			</div>
+			<div class="col-lg-9 col-md-12 col-xxl-10">
+				{% include 'article.html' with articles_list=articles_list %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
