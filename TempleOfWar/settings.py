@@ -41,8 +41,6 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'search',
-    'arts',
-    'music',
     'private_office',
     'likes',
     'ip',
@@ -88,8 +86,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'tof',
-        'USER': 'root',
-        'PASSWORD': 'BakurLox2004',
+        'USER': '',
+        'PASSWORD': '',
         'HOST': 'localhost'
     }
 }

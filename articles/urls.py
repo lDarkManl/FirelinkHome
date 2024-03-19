@@ -14,8 +14,4 @@ urlpatterns = [
 	path('<int:article_id>/<int:comment_id>/comment', views.leave_comment, name = 'leave_sub_comment'),
 	path('like/<int:article_id>', views.like, name = 'article_like'),
 	path('like/<int:article_id>/<int:comment_id>', views.like, name = 'comment_like'),
-	path('add_article', views.add_article, name = 'add_article'),
-	path('change/<int:article_id>', views.change_article, name='change_article'),
-	path('random_article', views.random_article, name='random_article'),
-	path('delete_article/<int:article_id>', views.delete_article, name='delete_article')
 ]

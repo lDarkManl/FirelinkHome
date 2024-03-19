@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 class Ip(models.Model):
+	'''Модель ip адреса'''
 	ip = models.CharField('Ip адрес', max_length=255)
 	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
 	object_id = models.PositiveIntegerField()

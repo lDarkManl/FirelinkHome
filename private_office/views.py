@@ -6,12 +6,11 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from .models import History
 from articles.models import Article
-from music.models import Track
-from arts.models import Art
 from django.db.models import When, Case
 from django.contrib.contenttypes.models import ContentType
 
 def registration(request):
+	'''Регистрация'''
 	if request.method == 'POST':
 		form = UserRegistrationForm(request.POST)
 		if form.is_valid():
@@ -27,6 +26,7 @@ def registration(request):
 	return render(request, 'private_office/registration.html', context)
 
 def user_login(request):
+	'''Войти в аккаунт'''
 	if request.method == 'POST':
 		form = UserLoginForm(data=request.POST)
 		if form.is_valid():
@@ -41,20 +41,18 @@ def user_login(request):
 	return render(request, 'private_office/login.html', context)
 
 def private_office(request):
+	'''Личный кабинет'''
 	if request.user.is_authenticated:
 		photo_form = ProfileForm()
 		user_form = UserForm()
 		history = History.objects.filter(user=request.user).order_by('-date')
 		articles_list = get_history(history, 'article')
-		arts_list = get_history(history, 'art')
-		tracks_list = get_history(history, 'track')
 		user_articles_list = Article.objects.filter(author=request.user).order_by('-pub_date')
-		user_tracks_list = Track.objects.filter(author=request.user).order_by('-pub_date')
-		user_arts_list = Art.objects.filter(author=request.user).order_by('-pub_date')
-		return render(request, 'private_office/private_office.html', {'photo_form': photo_form, 'user_form':user_form, 'articles_list': articles_list, 'tracks_list': tracks_list, 'arts_list': arts_list, 'user_articles_list': user_articles_list, 'user_tracks_list': user_tracks_list, 'user_arts_list': user_arts_list})
+		return render(request, 'private_office/private_office.html', {'photo_form': photo_form, 'user_form':user_form, 'articles_list': articles_list})
 	return HttpResponseRedirect(reverse('private_office:login'))
 
 def get_history(history, model, count=None):
+	'''Получить историю по модели'''
 	id_post = []
 	for record in history:
 		if record.model == model:
@@ -68,6 +66,7 @@ def get_history(history, model, count=None):
 	return posts_list
 
 def set_name(request):
+	'''Установить имя'''
 	if request.user.is_authenticated:
 		if request.method == 'POST':
 			user_form = UserForm(request.POST, instance=request.user)
@@ -79,6 +78,7 @@ def set_name(request):
 		return HttpResponseRedirect(reverse('private_office:login'))
 
 def set_image(request):
+	'''Установить изображение'''
 	if request.user.is_authenticated:
 		if request.method == 'POST':
 			profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -90,6 +90,8 @@ def set_image(request):
 		return HttpResponseRedirect(reverse('private_office:private_office'))
 	else:
 		return HttpResponseRedirect(reverse('private_office:login'))
+
 def user_logout(request):
+	'''Выйти из аккаунта'''
 	logout(request)
 	return HttpResponseRedirect(reverse('private_office:login'))
